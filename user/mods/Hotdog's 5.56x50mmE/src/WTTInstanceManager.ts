@@ -21,7 +21,6 @@ import { ImporterUtil } from "@spt/utils/ImporterUtil";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
-import { VFS } from "@spt/utils/VFS";
 
 export class WTTInstanceManager 
 {
@@ -29,8 +28,6 @@ export class WTTInstanceManager
     public modName: string;
     public debug: boolean;
     // Useful Paths
-    public modPath: string = path.join(process.cwd(), "\\user\\mods\\WelcomeToTarkov\\");
-    public dbPath: string = path.join(process.cwd(), "\\user\\mods\\WelcomeToTarkov\\db");
     public profilePath: string = path.join(process.cwd(), "\\user\\profiles");
 
     // Instances
@@ -57,7 +54,6 @@ export class WTTInstanceManager
     public importerUtil: ImporterUtil;
     public traderAssortService: TraderAssortService;
     public applicationContext: ApplicationContext;
-    public vfs: VFS;
     //#endregion
 
     // Call at the start of the mods postDBLoad method
@@ -78,7 +74,6 @@ export class WTTInstanceManager
         this.staticRouter = container.resolve<StaticRouterModService>("StaticRouterModService");
         this.dynamicRouter = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.traderAssortService = container.resolve<TraderAssortService>("TraderAssortService");
-        this.vfs = container.resolve<VFS>("VFS");
 
 
     }
@@ -95,4 +90,27 @@ export class WTTInstanceManager
 
     }
 
+    public colorLog(message: string, color: string) {
+        const colorCodes = {
+            red: "\x1b[31m",
+            green: "\x1b[32m",
+            yellow: "\x1b[33m",
+            blue: "\x1b[34m",
+            magenta: "\x1b[35m",
+            cyan: "\x1b[36m",
+            white: "\x1b[37m",
+            gray: "\x1b[90m",
+            brightRed: "\x1b[91m",
+            brightGreen: "\x1b[92m",
+            brightYellow: "\x1b[93m",
+            brightBlue: "\x1b[94m",
+            brightMagenta: "\x1b[95m",
+            brightCyan: "\x1b[96m",
+            brightWhite: "\x1b[97m"
+        };
+      
+        const resetCode = "\x1b[0m";
+        const colorCode = colorCodes[color as keyof typeof colorCodes] || "\x1b[37m"; // Default to white if color is invalid.
+        console.log(`${colorCode}${message}${resetCode}`); // Log the colored message here
+    }
 }
